@@ -1,4 +1,4 @@
-# 🚀 Test Automation Monitoring Stack
+<img width="1350" height="682" alt="image" src="https://github.com/user-attachments/assets/3f871ef8-b35a-4c66-b14f-3f02648b594a" /># 🚀 Test Automation Monitoring Stack
 
 Bu proje, **Selenium Java test otomasyonu** ile **Grafana, Prometheus ve cAdvisor** kullanarak kapsamlı bir **monitoring stack** oluşturur. Test otomasyonu metriklerini gerçek zamanlı olarak izleyebilir ve görselleştirebilirsiniz.
 
@@ -136,7 +136,7 @@ mvn test
 
 ### 📸 Dashboard Önizlemesi
 
-![Complete Test Automation Dashboard](https://i.imgur.com/example-dashboard.png)
+<img width="1350" height="682" alt="image" src="https://github.com/user-attachments/assets/c128e18b-32a1-46d0-b586-df1ac2deff51" />
 
 *Yukarıdaki ekran görüntüsü, "Complete Test Automation Dashboard"ın gerçek zamanlı metriklerini göstermektedir. Dashboard, sistem performansı (CPU, bellek) ve test otomasyonu sonuçlarını (test başarı oranı, çalıştırma sayısı, süreler) kapsamlı bir şekilde görselleştirir.*
 
