@@ -1,4 +1,4 @@
-<img width="1350" height="682" alt="image" src="https://github.com/user-attachments/assets/3f871ef8-b35a-4c66-b14f-3f02648b594a" /># 🚀 Test Automation Monitoring Stack
+# 🚀 Test Automation Monitoring Stack
 
 Bu proje, **Selenium Java test otomasyonu** ile **Grafana, Prometheus ve cAdvisor** kullanarak kapsamlı bir **monitoring stack** oluşturur. Test otomasyonu metriklerini gerçek zamanlı olarak izleyebilir ve görselleştirebilirsiniz.
 
