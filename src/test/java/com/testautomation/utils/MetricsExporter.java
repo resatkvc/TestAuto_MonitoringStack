@@ -48,49 +48,71 @@ public class MetricsExporter {
     public static void initialize() {
         if (!isInitialized) {
             try {
-                server = new HTTPServer(8081);
+                server = new HTTPServer(8082);
+                System.out.println("✅ Metrics server started on port 8082");
                 isInitialized = true;
-                System.out.println("Metrics server started on port 8081");
             } catch (IOException e) {
-                System.err.println("Failed to start metrics server: " + e.getMessage());
+                System.err.println("⚠️ Failed to start metrics server: " + e.getMessage());
+                if (e.getMessage().contains("Address already in use")) {
+                    System.out.println("✅ Metrics server already running on port 8082");
+                    isInitialized = true;
+                }
             }
         }
     }
     
     public static void recordTestExecution(String testName) {
         testExecutionsTotal.inc();
-        System.out.println("Test executed: " + testName);
+        System.out.println("✅ Test executed: " + testName + " (Total: " + testExecutionsTotal.get() + ")");
     }
     
     public static void recordTestFailure(String testName, String failureType) {
         testFailuresTotal.labels(failureType).inc();
-        System.out.println("Test failed: " + testName + " - " + failureType);
+        System.out.println("❌ Test failed: " + testName + " - " + failureType);
     }
     
     public static void recordTestDuration(String testName, double durationSeconds) {
         testExecutionDuration.labels(testName).observe(durationSeconds);
-        System.out.println("Test duration: " + testName + " - " + durationSeconds + "s");
+        System.out.println("⏱️ Test duration: " + testName + " - " + durationSeconds + "s");
     }
     
     public static void updateSuccessRate(double successRate) {
         testSuccessRate.set(successRate);
-        System.out.println("Success rate updated: " + successRate + "%");
+        System.out.println("📊 Success rate updated: " + successRate + "%");
     }
     
     public static void recordPageLoadTime(String pageName, double loadTimeSeconds) {
         pageLoadTime.labels(pageName).observe(loadTimeSeconds);
-        System.out.println("Page load time: " + pageName + " - " + loadTimeSeconds + "s");
+        System.out.println("🌐 Page load time: " + pageName + " - " + loadTimeSeconds + "s");
     }
     
     public static void recordBrowserMemoryUsage(long memoryBytes) {
         browserMemoryUsage.set(memoryBytes);
-        System.out.println("Browser memory: " + (memoryBytes / 1024 / 1024) + " MB");
+        System.out.println("💾 Browser memory: " + (memoryBytes / 1024 / 1024) + " MB");
     }
     
     public static void shutdown() {
         if (server != null) {
             server.stop();
-            System.out.println("Metrics server stopped");
+            System.out.println("🛑 Metrics server stopped");
+            server = null;
+        }
+        isInitialized = false;
+    }
+    
+    // Main method to run MetricsExporter as standalone application
+    public static void main(String[] args) {
+        System.out.println("🚀 Starting MetricsExporter as standalone application...");
+        initialize();
+        
+        // Keep the application running
+        try {
+            System.out.println("✅ MetricsExporter is running on port 8082. Press Ctrl+C to stop.");
+            Thread.currentThread().join();
+        } catch (InterruptedException e) {
+            System.out.println("⚠️ MetricsExporter interrupted");
+        } finally {
+            shutdown();
         }
     }
 } 

@@ -331,8 +331,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "rate(test_execution_duration_seconds_sum[5m]) / rate(test_execution_duration_seconds_count[5m])",
-          "legendFormat": "Test Duration (seconds)",
+          "expr": "test_execution_duration_seconds_sum",
+          "legendFormat": "Test Duration Sum",
           "refId": "A"
         }
       ],
@@ -529,8 +529,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "rate(page_load_time_seconds_sum[5m]) / rate(page_load_time_seconds_count[5m])",
-          "legendFormat": "Page Load Times (seconds)",
+          "expr": "page_load_time_seconds_sum",
+          "legendFormat": "Page Load Time Sum",
           "refId": "A"
         }
       ],
@@ -595,8 +595,8 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "test_execution_duration_seconds",
-          "legendFormat": "Test Execution Duration",
+          "expr": "test_execution_duration_seconds_sum",
+          "legendFormat": "Test Execution Duration Sum",
           "refId": "A"
         }
       ],
@@ -691,7 +691,7 @@
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},

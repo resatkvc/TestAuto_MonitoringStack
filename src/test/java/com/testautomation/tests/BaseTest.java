@@ -47,8 +47,7 @@ public class BaseTest {
     
     @AfterSuite
     public void tearDownSuite() {
-        // Shutdown metrics exporter
-        MetricsExporter.shutdown();
-        System.out.println("✅ Test suite tamamlandı!");
+        // Don't shutdown metrics exporter - keep it running for continuous monitoring
+        System.out.println("✅ Test suite tamamlandı! Metrics server çalışmaya devam ediyor...");
     }
 } 
