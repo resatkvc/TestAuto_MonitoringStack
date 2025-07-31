@@ -12,6 +12,13 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
+  # PushGateway - Test metrics
+  - job_name: 'pushgateway'
+    static_configs:
+      - targets: ['pushgateway:9091']
+    scrape_interval: 5s
+    honor_labels: true
+
   # cAdvisor - Container metrics
   - job_name: 'cadvisor'
     static_configs:
@@ -20,12 +27,4 @@ scrape_configs:
   # Node Exporter - Host metrics
   - job_name: 'node-exporter'
     static_configs:
-      - targets: ['node-exporter:9100']
-
-  # Test Automation Metrics - Host
-  - job_name: 'test-automation'
-    static_configs:
-      - targets: ['host.docker.internal:8082']
-    scrape_interval: 5s
-    metrics_path: '/metrics'
-    honor_labels: true 
+      - targets: ['node-exporter:9100'] 

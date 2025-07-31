@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import java.time.Instant;
 
 public class LoginTest extends BaseTest {
     
@@ -15,7 +14,6 @@ public class LoginTest extends BaseTest {
     @Description("Successful login with valid credentials")
     @Severity(SeverityLevel.CRITICAL)
     public void testSuccessfulLogin() {
-        Instant startTime = Instant.now();
         String testName = "testSuccessfulLogin";
         
         try {
@@ -32,12 +30,16 @@ public class LoginTest extends BaseTest {
             // Record page load time
             MetricsExporter.recordPageLoadTime("inventory", 2.0);
             
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+            
         } catch (Exception e) {
             MetricsExporter.recordTestFailure(testName, "assertion_error");
             throw e;
         } finally {
-            double duration = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+            double duration = getTestDuration();
             MetricsExporter.recordTestDuration(testName, duration);
+            System.out.println("⏱️ Test duration: " + testName + " - " + duration + "s");
         }
     }
     
@@ -45,42 +47,93 @@ public class LoginTest extends BaseTest {
     @Description("Failed login with invalid credentials")
     @Severity(SeverityLevel.NORMAL)
     public void testFailedLogin() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("invalid_user", "invalid_password");
+        String testName = "testFailedLogin";
         
-        Assert.assertTrue(loginPage.isErrorMessageDisplayed(), 
-            "Error message should be displayed for invalid credentials");
-        
-        String errorMessage = loginPage.getErrorMessage();
-        Assert.assertTrue(errorMessage.contains("Epic sadface"), 
-            "Error message should contain expected text");
+        try {
+            MetricsExporter.recordTestExecution(testName);
+            
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.login("invalid_user", "invalid_password");
+            
+            Assert.assertTrue(loginPage.isErrorMessageDisplayed(), 
+                "Error message should be displayed for invalid credentials");
+            
+            String errorMessage = loginPage.getErrorMessage();
+            Assert.assertTrue(errorMessage.contains("Epic sadface"), 
+                "Error message should contain expected text");
+            
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+                
+        } catch (Exception e) {
+            MetricsExporter.recordTestFailure(testName, "assertion_error");
+            throw e;
+        } finally {
+            double duration = getTestDuration();
+            MetricsExporter.recordTestDuration(testName, duration);
+            System.out.println("⏱️ Test duration: " + testName + " - " + duration + "s");
+        }
     }
     
     @Test
     @Description("Login with locked out user")
     @Severity(SeverityLevel.NORMAL)
     public void testLockedOutUser() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("locked_out_user", "secret_sauce");
+        String testName = "testLockedOutUser";
         
-        Assert.assertTrue(loginPage.isErrorMessageDisplayed(), 
-            "Error message should be displayed for locked out user");
-        
-        String errorMessage = loginPage.getErrorMessage();
-        Assert.assertTrue(errorMessage.contains("Sorry, this user has been locked out"), 
-            "Error message should indicate user is locked out");
+        try {
+            MetricsExporter.recordTestExecution(testName);
+            
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.login("locked_out_user", "secret_sauce");
+            
+            Assert.assertTrue(loginPage.isErrorMessageDisplayed(), 
+                "Error message should be displayed for locked out user");
+            
+            String errorMessage = loginPage.getErrorMessage();
+            Assert.assertTrue(errorMessage.contains("Sorry, this user has been locked out"), 
+                "Error message should indicate user is locked out");
+            
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+                
+        } catch (Exception e) {
+            MetricsExporter.recordTestFailure(testName, "assertion_error");
+            throw e;
+        } finally {
+            double duration = getTestDuration();
+            MetricsExporter.recordTestDuration(testName, duration);
+            System.out.println("⏱️ Test duration: " + testName + " - " + duration + "s");
+        }
     }
     
     @Test
     @Description("Login with problem user")
     @Severity(SeverityLevel.NORMAL)
     public void testProblemUser() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("problem_user", "secret_sauce");
+        String testName = "testProblemUser";
         
-        // Verify successful login
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains("/inventory.html"), 
-            "Problem user should be able to login");
+        try {
+            MetricsExporter.recordTestExecution(testName);
+            
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage.login("problem_user", "secret_sauce");
+            
+            // Verify successful login
+            String currentUrl = driver.getCurrentUrl();
+            Assert.assertTrue(currentUrl.contains("/inventory.html"), 
+                "Problem user should be able to login");
+            
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+                
+        } catch (Exception e) {
+            MetricsExporter.recordTestFailure(testName, "assertion_error");
+            throw e;
+        } finally {
+            double duration = getTestDuration();
+            MetricsExporter.recordTestDuration(testName, duration);
+            System.out.println("⏱️ Test duration: " + testName + " - " + duration + "s");
+        }
     }
 } 

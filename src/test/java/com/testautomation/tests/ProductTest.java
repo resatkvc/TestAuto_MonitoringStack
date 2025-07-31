@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import java.time.Instant;
 
 public class ProductTest extends BaseTest {
     
@@ -16,16 +15,11 @@ public class ProductTest extends BaseTest {
     @Description("Verify products are displayed after login")
     @Severity(SeverityLevel.CRITICAL)
     public void testProductsDisplayed() {
-        Instant startTime = Instant.now();
         String testName = "testProductsDisplayed";
         
         System.out.println("🚀 Test başlıyor: " + testName);
         
         try {
-            // Initialize metrics exporter
-            MetricsExporter.initialize();
-            System.out.println("✅ MetricsExporter initialized");
-            
             MetricsExporter.recordTestExecution(testName);
             System.out.println("✅ Test execution recorded");
             
@@ -44,24 +38,18 @@ public class ProductTest extends BaseTest {
             MetricsExporter.recordPageLoadTime("products", 1.5);
             System.out.println("✅ Page load time recorded");
             
-            // Record browser memory usage
-            Runtime runtime = Runtime.getRuntime();
-            long memoryUsage = runtime.totalMemory() - runtime.freeMemory();
-            MetricsExporter.recordBrowserMemoryUsage(memoryUsage);
-            System.out.println("✅ Browser memory usage recorded: " + (memoryUsage / 1024 / 1024) + " MB");
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+            System.out.println("✅ Test success recorded");
             
         } catch (Exception e) {
             System.err.println("❌ Test failed: " + e.getMessage());
             MetricsExporter.recordTestFailure(testName, "assertion_error");
             throw e;
         } finally {
-            double duration = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+            double duration = getTestDuration();
             MetricsExporter.recordTestDuration(testName, duration);
             System.out.println("✅ Test duration recorded: " + duration + "s");
-            
-            // Update success rate (assuming this test passed)
-            MetricsExporter.updateSuccessRate(100.0);
-            System.out.println("✅ Success rate updated");
         }
     }
     
@@ -69,16 +57,11 @@ public class ProductTest extends BaseTest {
     @Description("Add product to cart and verify cart badge")
     @Severity(SeverityLevel.CRITICAL)
     public void testAddProductToCart() {
-        Instant startTime = Instant.now();
         String testName = "testAddProductToCart";
         
         System.out.println("🚀 Test başlıyor: " + testName);
         
         try {
-            // Initialize metrics exporter
-            MetricsExporter.initialize();
-            System.out.println("✅ MetricsExporter initialized");
-            
             MetricsExporter.recordTestExecution(testName);
             System.out.println("✅ Test execution recorded");
             
@@ -105,12 +88,16 @@ public class ProductTest extends BaseTest {
             MetricsExporter.recordPageLoadTime("cart", 2.0);
             System.out.println("✅ Page load time recorded");
             
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+            System.out.println("✅ Test success recorded");
+            
         } catch (Exception e) {
             System.err.println("❌ Test failed: " + e.getMessage());
             MetricsExporter.recordTestFailure(testName, "assertion_error");
             throw e;
         } finally {
-            double duration = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+            double duration = getTestDuration();
             MetricsExporter.recordTestDuration(testName, duration);
             System.out.println("✅ Test duration recorded: " + duration + "s");
         }
@@ -120,7 +107,6 @@ public class ProductTest extends BaseTest {
     @Description("Add multiple products to cart")
     @Severity(SeverityLevel.NORMAL)
     public void testAddMultipleProductsToCart() {
-        Instant startTime = Instant.now();
         String testName = "testAddMultipleProductsToCart";
         
         try {
@@ -139,12 +125,16 @@ public class ProductTest extends BaseTest {
             String cartCount = productPage.getCartItemCount();
             Assert.assertEquals(cartCount, "2", "Cart should contain 2 items");
             
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+            
         } catch (Exception e) {
             MetricsExporter.recordTestFailure(testName, "assertion_error");
             throw e;
         } finally {
-            double duration = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+            double duration = getTestDuration();
             MetricsExporter.recordTestDuration(testName, duration);
+            System.out.println("⏱️ Test duration: " + testName + " - " + duration + "s");
         }
     }
     
@@ -152,7 +142,6 @@ public class ProductTest extends BaseTest {
     @Description("Remove product from cart")
     @Severity(SeverityLevel.NORMAL)
     public void testRemoveProductFromCart() {
-        Instant startTime = Instant.now();
         String testName = "testRemoveProductFromCart";
         
         try {
@@ -174,12 +163,16 @@ public class ProductTest extends BaseTest {
             String cartCount = productPage.getCartItemCount();
             Assert.assertEquals(cartCount, "0", "Cart should be empty after removal");
             
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+            
         } catch (Exception e) {
             MetricsExporter.recordTestFailure(testName, "assertion_error");
             throw e;
         } finally {
-            double duration = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+            double duration = getTestDuration();
             MetricsExporter.recordTestDuration(testName, duration);
+            System.out.println("⏱️ Test duration: " + testName + " - " + duration + "s");
         }
     }
     
@@ -187,7 +180,6 @@ public class ProductTest extends BaseTest {
     @Description("Verify product names are displayed")
     @Severity(SeverityLevel.NORMAL)
     public void testProductNamesDisplayed() {
-        Instant startTime = Instant.now();
         String testName = "testProductNamesDisplayed";
         
         try {
@@ -203,12 +195,16 @@ public class ProductTest extends BaseTest {
             Assert.assertNotNull(firstProductName, "Product name should not be null");
             Assert.assertFalse(firstProductName.isEmpty(), "Product name should not be empty");
             
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+            
         } catch (Exception e) {
             MetricsExporter.recordTestFailure(testName, "assertion_error");
             throw e;
         } finally {
-            double duration = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+            double duration = getTestDuration();
             MetricsExporter.recordTestDuration(testName, duration);
+            System.out.println("⏱️ Test duration: " + testName + " - " + duration + "s");
         }
     }
     
@@ -216,7 +212,6 @@ public class ProductTest extends BaseTest {
     @Description("Verify product prices are displayed")
     @Severity(SeverityLevel.NORMAL)
     public void testProductPricesDisplayed() {
-        Instant startTime = Instant.now();
         String testName = "testProductPricesDisplayed";
         
         try {
@@ -232,12 +227,16 @@ public class ProductTest extends BaseTest {
             Assert.assertNotNull(firstProductPrice, "Product price should not be null");
             Assert.assertTrue(firstProductPrice.startsWith("$"), "Product price should start with $");
             
+            // Record successful test
+            MetricsExporter.recordTestSuccess(testName);
+            
         } catch (Exception e) {
             MetricsExporter.recordTestFailure(testName, "assertion_error");
             throw e;
         } finally {
-            double duration = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+            double duration = getTestDuration();
             MetricsExporter.recordTestDuration(testName, duration);
+            System.out.println("⏱️ Test duration: " + testName + " - " + duration + "s");
         }
     }
 } 

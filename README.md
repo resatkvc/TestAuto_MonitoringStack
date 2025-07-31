@@ -1,87 +1,35 @@
-# 🚀 Test Automation Monitoring Stack
+# Test Automation Monitoring Stack
 
-Bu proje, **Selenium Java test otomasyonu** ile **Grafana, Prometheus ve cAdvisor** kullanarak kapsamlı bir **monitoring stack** oluşturur. Test otomasyonu metriklerini gerçek zamanlı olarak izleyebilir ve görselleştirebilirsiniz.
+Bu proje, Selenium WebDriver ile test otomasyonu yaparken Prometheus, Grafana ve cAdvisor kullanarak gerçek zamanlı monitoring sağlar.
 
-## 📋 İçindekiler
+## 🚀 Özellikler
 
-- [🎯 Proje Özeti](#-proje-özeti)
-- [🏗️ Mimari](#️-mimari)
-- [📦 Teknolojiler](#-teknolojiler)
-- [🚀 Hızlı Başlangıç](#-hızlı-başlangıç)
-- [📊 Monitoring Stack](#-monitoring-stack)
-- [🧪 Test Otomasyonu](#-test-otomasyonu)
-- [📈 Metrikler](#-metrikler)
-- [🔧 Konfigürasyon](#-konfigürasyon)
-- [📁 Proje Yapısı](#-proje-yapısı)
-- [🤝 Katkıda Bulunma](#-katkıda-bulunma)
-- [📄 Lisans](#-lisans)
+### 📊 Test Metrikleri
+- **Test Executions**: Toplam test çalıştırma sayısı
+- **Test Successes**: Başarılı test sayısı
+- **Test Failures**: Başarısız test sayısı (hata türüne göre)
+- **Test Success Rate**: Başarı oranı yüzdesi
+- **Test Duration**: Test çalışma süreleri
+- **Active Tests**: Şu anda çalışan test sayısı
 
-## 🎯 Proje Özeti
+### 🌐 Sayfa Metrikleri
+- **Page Load Time**: Sayfa yükleme süreleri
+- **Page Loads Total**: Toplam sayfa yükleme sayısı
+- **Browser Memory Usage**: Browser memory kullanımı
 
-Bu proje, modern test otomasyonu için **end-to-end monitoring çözümü** sunar:
+### 🖥️ Sistem Metrikleri
+- **Node Exporter**: CPU, Memory, Disk, Network kullanımı
+- **cAdvisor**: Container metrikleri ve Docker stats
+- **Prometheus**: Kendi metrikleri
 
-- ✅ **Selenium Java** test otomasyonu
-- ✅ **Page Object Model (POM)** tasarım deseni
-- ✅ **TestNG** test framework'ü
-- ✅ **Grafana** dashboard'ları
-- ✅ **Prometheus** metrik toplama
-- ✅ **cAdvisor** container monitoring
-- ✅ **Docker Compose** ile kolay deployment
-- ✅ **Gerçek test verileri** ile dinamik metrikler
+## 🛠️ Kurulum
 
-## 🏗️ Mimari
+### Gereksinimler
+- Java 8+
+- Maven
+- Docker & Docker Compose
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Selenium      │    │   Prometheus    │    │     Grafana     │
-│   Java Tests    │───▶│   Metrics       │───▶│   Dashboards    │
-│   (Real Data)   │    │   Collection    │    │   & Alerts      │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       ▼                       │
-         │              ┌─────────────────┐             │
-         │              │   cAdvisor      │             │
-         │              │   Container     │             │
-         │              │   Monitoring    │             │
-         │              └─────────────────┘             │
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Allure        │    │   Node Exporter │    │   Real-time     │
-│   Reports       │    │   Host Metrics  │    │   Monitoring    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
-
-## 📦 Teknolojiler
-
-### 🧪 Test Otomasyonu
-- **Java 21** - Ana programlama dili
-- **Selenium WebDriver 4.15.0** - Web otomasyon
-- **TestNG 7.8.0** - Test framework
-- **WebDriverManager 5.6.2** - Driver yönetimi
-- **Allure 2.24.0** - Test raporlama
-- **Prometheus Client** - Metrik export
-
-### 📊 Monitoring Stack
-- **Grafana 10.0.0** - Dashboard ve görselleştirme
-- **Prometheus 2.45.0** - Metrik toplama ve depolama
-- **cAdvisor** - Container monitoring
-- **Node Exporter** - Host sistem metrikleri
-
-### 🐳 Containerization
-- **Docker** - Container runtime
-- **Docker Compose** - Multi-container orchestration
-
-## 🚀 Hızlı Başlangıç
-
-### 📋 Gereksinimler
-
-- ✅ **Docker** ve **Docker Compose** yüklü
-- ✅ **Java 21** JDK
-- ✅ **Maven** (opsiyonel)
-- ✅ **Git** (opsiyonel)
-
-### 🔧 Kurulum
+### Adımlar
 
 1. **Projeyi klonlayın:**
 ```bash
@@ -89,317 +37,208 @@ git clone <repository-url>
 cd TestAuto_MonitoringStack
 ```
 
-2. **Monitoring stack'i başlatın:**
+2. **Dependencies'leri yükleyin:**
 ```bash
+mvn clean compile
+```
+
+3. **Monitoring stack'i başlatın:**
+```bash
+run-tests-with-monitoring.bat
+```
+
+## 📊 Monitoring Dashboard'ları
+
+### Grafana Dashboard
+- **URL**: http://localhost:3000
+- **Kullanıcı**: admin
+- **Şifre**: admin123
+
+### Prometheus
+- **URL**: http://localhost:9090
+
+### PushGateway
+- **URL**: http://localhost:9091
+
+### cAdvisor
+- **URL**: http://localhost:8080
+
+### Node Exporter
+- **URL**: http://localhost:9100
+
+## 🧪 Test Çalıştırma
+
+### Otomatik Çalıştırma
+```bash
+run-tests-with-monitoring.bat
+```
+
+Bu script:
+1. Docker Compose ile monitoring stack'i başlatır
+2. Eski Allure raporlarını temizler
+3. Testleri çalıştırır
+4. Dashboard linklerini gösterir
+
+### Manuel Çalıştırma
+```bash
+# 1. Monitoring stack'i başlat
 docker-compose up -d
+
+# 2. Testleri çalıştır
+mvn clean test
+
+# 3. Grafana'ya eriş
+# http://localhost:3000 (admin/admin123)
 ```
 
-3. **Testleri çalıştırın (MetricsExporter otomatik başlar):**
+## 📈 Metrikler
+
+### Test Metrikleri
+- `test_executions_total` - Toplam test sayısı
+- `test_successes_total` - Başarılı test sayısı
+- `test_failures_total` - Başarısız test sayısı (failure_type label'ı ile)
+- `test_success_rate` - Başarı oranı yüzdesi
+- `test_execution_duration_seconds` - Test çalışma süreleri
+- `active_tests` - Aktif test sayısı
+
+### Sayfa Metrikleri
+- `page_load_time_seconds` - Sayfa yükleme süreleri
+- `page_loads_total` - Toplam sayfa yükleme sayısı
+- `browser_memory_usage_bytes` - Browser memory kullanımı
+
+## 🔧 Konfigürasyon
+
+### Prometheus Konfigürasyonu
+`monitoring/prometheus/prometheus.yml` dosyasında:
+- Scrape interval: 5s
+- Test automation metrics: PushGateway (localhost:9091)
+- Node Exporter: node-exporter:9100
+- cAdvisor: cadvisor:8080
+
+### Grafana Konfigürasyonu
+- Datasource: Prometheus (http://prometheus:9090)
+- Dashboard: `monitoring/grafana/dashboards/complete-dashboard.json`
+
+## 🐛 Sorun Giderme
+
+### Metrics Server Başlamıyor
 ```bash
-# Maven ile (önerilen)
-mvn test
+# PushGateway'ın çalışıp çalışmadığını kontrol edin
+docker-compose ps pushgateway
 
-# Veya IDE'den TestNG suite'i çalıştırın
+# Metrics server'ı manuel başlatın
+java -cp "target/classes;target/test-classes" com.testautomation.utils.MetricsExporter
 ```
 
-### 🌐 Erişim URL'leri
+### Docker Servisleri Başlamıyor
+```bash
+# Docker servislerini kontrol edin
+docker-compose ps
 
-| Servis | URL | Kullanıcı/Şifre |
-|--------|-----|------------------|
-| **Grafana** | http://localhost:3000 | admin/admin |
-| **Prometheus** | http://localhost:9090 | - |
-| **cAdvisor** | http://localhost:8080 | - |
-| **Node Exporter** | http://localhost:9100 | - |
-| **Metrics Endpoint** | http://localhost:8081/metrics | - |
-
-## 📊 Monitoring Stack
-
-### 🎯 Grafana Dashboard
-
-**"Complete Test Automation Dashboard"** şu metrikleri içerir:
-
-#### 📈 Sistem Metrikleri
-- **Container CPU Usage** - Docker container CPU kullanımı
-- **Container Memory Usage** - Docker container bellek kullanımı
-
-#### 🧪 Test Otomasyonu Metrikleri
-- **Test Success Rate** - Gerçek test başarı oranı (%)
-- **Test Execution Count** - Toplam test çalıştırma sayısı
-- **Test Duration** - Gerçek test süreleri (saniye)
-- **Failed Tests Count** - Başarısız test sayısı
-
-#### 🌐 Web Performance Metrikleri
-- **Browser Memory Usage** - Tarayıcı bellek kullanımı (MB)
-- **Page Load Times** - Gerçek sayfa yükleme süreleri (saniye)
-
-### 📸 Dashboard Önizlemesi
-
-<img width="1350" height="682" alt="image" src="https://github.com/user-attachments/assets/c128e18b-32a1-46d0-b586-df1ac2deff51" />
-
-*Yukarıdaki ekran görüntüsü, "Complete Test Automation Dashboard"ın gerçek zamanlı metriklerini göstermektedir. Dashboard, sistem performansı (CPU, bellek) ve test otomasyonu sonuçlarını (test başarı oranı, çalıştırma sayısı, süreler) kapsamlı bir şekilde görselleştirir.*
-
-#### 🔍 Dashboard Detayları:
-
-**Sistem Metrikleri:**
-- **Container CPU Usage**: Docker container CPU kullanımı (stacked area chart)
-- **Container Memory Usage**: Docker container bellek kullanımı (line chart)
-
-**Test Metrikleri:**
-- **Test Success Rate**: Gerçek test başarı oranı (timeseries)
-- **Test Execution Count**: Toplam test çalıştırma sayısı (timeseries)
-- **Test Duration**: Ortalama test süreleri (timeseries)
-- **Failed Tests Count**: Başarısız test sayısı (timeseries)
-
-**Performance Metrikleri:**
-- **Browser Memory Usage**: Tarayıcı bellek kullanımı (timeseries)
-- **Page Load Times**: Sayfa yükleme süreleri (timeseries)
-
-### 🔄 Gerçek Zamanlı Güncelleme
-
-- **Dashboard yenileme**: Her 5 saniye
-- **Metrik güncelleme**: Test çalıştırma sırasında gerçek veriler
-- **Test verileri**: MetricsExporter utility'den otomatik
-
-## 🧪 Test Otomasyonu
-
-### 🎯 Test Senaryoları
-
-Proje **SauceDemo** web sitesi üzerinde testler içerir:
-
-#### 🔐 Login Testleri
-- ✅ Geçerli kullanıcı girişi (`standard_user`)
-- ❌ Geçersiz kullanıcı girişi
-- ❌ Kilitli kullanıcı girişi (`locked_out_user`)
-- ✅ Problem kullanıcı girişi (`problem_user`)
-
-#### 🛍️ Product Testleri
-- ✅ Ürün listesi görüntüleme (6 ürün)
-- ✅ Sepete ürün ekleme
-- ✅ Sepetten ürün çıkarma
-- ✅ Çoklu ürün ekleme
-- ✅ Ürün isimleri kontrolü
-- ✅ Ürün fiyatları kontrolü
-
-### 📁 Test Yapısı
-
-```
-src/test/java/com/testautomation/
-├── pages/
-│   ├── BasePage.java          # Temel sayfa sınıfı
-│   ├── LoginPage.java         # Giriş sayfası POM
-│   └── ProductPage.java       # Ürün sayfası POM
-├── tests/
-│   ├── BaseTest.java          # Temel test sınıfı (MetricsExporter başlatma)
-│   ├── LoginTest.java         # Giriş testleri (gerçek metrikler)
-│   └── ProductTest.java       # Ürün testleri (gerçek metrikler)
-└── utils/
-    └── MetricsExporter.java   # Prometheus metrik export utility
+# Logları kontrol edin
+docker-compose logs prometheus
+docker-compose logs grafana
 ```
 
-### 🎨 Page Object Model (POM)
+### Grafana'da Metrikler Görünmüyor
+1. Prometheus'ta targets'ları kontrol edin: http://localhost:9090/targets
+2. Test automation target'ının UP olduğundan emin olun
+3. 2-5 dakika bekleyin (ilk scrape için)
 
+## 📝 Test Yazma
+
+### Yeni Test Ekleme
 ```java
-// LoginPage.java örneği
-public class LoginPage extends BasePage {
-    @FindBy(id = "user-name")
-    private WebElement usernameField;
+@Test
+public void testExample() {
+    String testName = "testExample";
     
-    @FindBy(id = "password")
-    private WebElement passwordField;
-    
-    @FindBy(id = "login-button")
-    private WebElement loginButton;
-    
-    public void login(String username, String password) {
-        usernameField.sendKeys(username);
-        passwordField.sendKeys(password);
-        loginButton.click();
+    try {
+        MetricsExporter.recordTestExecution(testName);
+        
+        // Test logic here
+        // ...
+        
+        MetricsExporter.recordTestSuccess(testName);
+        
+    } catch (Exception e) {
+        MetricsExporter.recordTestFailure(testName, "assertion_error");
+        throw e;
+    } finally {
+        double duration = getTestDuration();
+        MetricsExporter.recordTestDuration(testName, duration);
     }
 }
 ```
 
-### 📊 Gerçek Test Metrikleri
-
-Her test çalıştığında şu metrikler otomatik kaydedilir:
-
-- **Test Execution Count** - Test çalıştırma sayısı
-- **Test Duration** - Test süreleri (milisaniye)
-- **Test Failures** - Hata sayısı ve türleri
-- **Page Load Times** - Sayfa yükleme süreleri
-- **Browser Memory** - Tarayıcı bellek kullanımı
-
-## 📈 Metrikler
-
-### 🔍 Prometheus Metrikleri
-
-| Metrik Adı | Tip | Açıklama |
-|------------|-----|----------|
-| `test_success_rate` | Gauge | Test başarı oranı (%) |
-| `test_executions_total` | Counter | Toplam test çalıştırma sayısı |
-| `test_execution_duration_seconds` | Histogram | Test süreleri (saniye) |
-| `test_failures_total` | Counter | Başarısız test sayısı |
-| `browser_memory_usage_bytes` | Gauge | Tarayıcı bellek kullanımı (bytes) |
-| `page_load_time_seconds` | Histogram | Sayfa yükleme süreleri (saniye) |
-
-### 📊 Dashboard Panelleri
-
-1. **Container CPU Usage** - Sistem CPU kullanımı
-2. **Container Memory Usage** - Sistem bellek kullanımı
-3. **Test Success Rate** - Test başarı oranı (gerçek veri)
-4. **Test Execution Count** - Test çalıştırma sayısı (gerçek veri)
-5. **Test Duration** - Test süreleri (gerçek veri)
-6. **Failed Tests Count** - Başarısız test sayısı (gerçek veri)
-7. **Browser Memory Usage** - Tarayıcı bellek kullanımı (gerçek veri)
-8. **Page Load Times** - Sayfa yükleme süreleri (gerçek veri)
-9. **Test Execution Duration** - Test çalıştırma süreleri (gerçek veri)
-10. **Test Summary** - Test özeti (bar chart)
-
-## 🔧 Konfigürasyon
-
-### 📁 Docker Compose
-
-```yaml
-services:
-  prometheus:
-    image: prom/prometheus:latest
-    ports: ["9090:9090"]
-    volumes: ["./monitoring/prometheus:/etc/prometheus"]
-    network_mode: host
-    
-  grafana:
-    image: grafana/grafana:latest
-    ports: ["3000:3000"]
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes: ["./monitoring/grafana:/etc/grafana"]
-      
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    ports: ["8080:8080"]
-    volumes: ["/:/rootfs:ro", "/var/run:/var/run:ro"]
-    
-  node-exporter:
-    image: prom/node-exporter:latest
-    ports: ["9100:9100"]
+### Sayfa Yükleme Süresi Kaydetme
+```java
+MetricsExporter.recordPageLoadTime("pageName", 2.5);
 ```
 
-### 📊 Prometheus Config
-
-```yaml
-scrape_configs:
-  - job_name: 'test-automation'
-    static_configs:
-      - targets: ['localhost:8081']
-    scrape_interval: 5s
-    metrics_path: '/metrics'
-    honor_labels: true
+### Browser Memory Kaydetme
+```java
+Runtime runtime = Runtime.getRuntime();
+long memoryUsage = runtime.totalMemory() - runtime.freeMemory();
+MetricsExporter.recordBrowserMemoryUsage(memoryUsage);
 ```
 
-### 🎨 Grafana Dashboard
+## 🎯 Dashboard Kullanımı
 
-- **Datasource**: Prometheus
-- **Refresh Rate**: 5 saniye
-- **Time Range**: Son 1 saat
-- **Theme**: Dark
-- **Panels**: Gerçek test verileri
+### Grafana Dashboard'ında Görebileceğiniz Metrikler:
 
-## 📁 Proje Yapısı
+1. **Test Başarı Oranı**: Yüzde olarak başarılı test oranı
+2. **Test Çalışma Süreleri**: Her testin ne kadar sürdüğü
+3. **Sayfa Yükleme Süreleri**: Hangi sayfaların ne kadar sürdüğü
+4. **Browser Memory Kullanımı**: Tarayıcı memory kullanımı
+5. **Aktif Test Sayısı**: Şu anda çalışan test sayısı
+6. **Sistem Metrikleri**: CPU, Memory, Disk kullanımı
 
-```
-TestAuto_MonitoringStack/
-├── 📁 src/
-│   └── 📁 test/java/com/testautomation/
-│       ├── 📁 pages/           # Page Object Model
-│       │   ├── BasePage.java
-│       │   ├── LoginPage.java
-│       │   └── ProductPage.java
-│       ├── 📁 tests/           # Test sınıfları
-│       │   ├── BaseTest.java   # MetricsExporter başlatma
-│       │   ├── LoginTest.java  # Gerçek metrikler
-│       │   └── ProductTest.java # Gerçek metrikler
-│       └── 📁 utils/           # Utility sınıfları
-│           └── MetricsExporter.java # Prometheus export
-├── 📁 monitoring/
-│   ├── 📁 grafana/
-│   │   ├── 📁 dashboards/      # Dashboard JSON'ları
-│   │   │   └── complete-dashboard.json
-│   │   └── 📁 provisioning/    # Grafana konfigürasyonu
-│   │       ├── datasources/
-│   │       └── dashboards/
-│   └── 📁 prometheus/
-│       └── prometheus.yml      # Prometheus konfigürasyonu
-├── 📄 pom.xml                  # Maven dependencies
-├── 📄 testng.xml              # TestNG suite konfigürasyonu
-├── 📄 docker-compose.yml      # Docker services
-└── 📄 README.md               # Proje dokümantasyonu
-```
+### Dashboard Panelleri:
+- **Test Executions**: Toplam test sayısı grafiği
+- **Success Rate**: Başarı oranı trendi
+- **Test Duration**: Test süreleri histogramı
+- **Page Load Times**: Sayfa yükleme süreleri
+- **System Resources**: CPU, Memory, Disk kullanımı
+- **Container Metrics**: Docker container metrikleri
 
+## 📊 Örnek Kullanım Senaryosu
 
+1. **Monitoring stack'i başlatın:**
+   ```bash
+   run-tests-with-monitoring.bat
+   ```
 
-### 📊 Prometheus Queries
+2. **Testler çalışırken Grafana'ya gidin:**
+   - http://localhost:3000 (admin/admin123)
 
-```promql
-# Test başarı oranı
-test_success_rate
+3. **Dashboard'da şunları göreceksiniz:**
+   - Testlerin gerçek zamanlı çalışması
+   - Başarı/başarısızlık oranları
+   - Test süreleri
+   - Sayfa yükleme performansı
+   - Sistem kaynak kullanımı
 
-# Test çalıştırma sayısı
-test_executions_total
+4. **Test tamamlandıktan sonra:**
+   - Final metrikleri görüntüleyin
+   - Performans analizi yapın
+   - Sorunlu testleri tespit edin
 
-# Test süreleri (ortalama)
-rate(test_execution_duration_seconds_sum[5m]) / rate(test_execution_duration_seconds_count[5m])
+## 🔄 Sürekli Monitoring
 
-# Başarısız test sayısı
-test_failures_total
+Metrics server test suite tamamlandıktan sonra da çalışmaya devam eder. Bu sayede:
+- Sürekli monitoring yapabilirsiniz
+- Geçmiş metrikleri karşılaştırabilirsiniz
+- Trend analizi yapabilirsiniz
 
-# Tarayıcı bellek kullanımı (MB)
-browser_memory_usage_bytes / 1024 / 1024
+## 📞 Destek
 
-# Sayfa yükleme süreleri (ortalama)
-rate(page_load_time_seconds_sum[5m]) / rate(page_load_time_seconds_count[5m])
-```
-
-## 🤝 Katkıda Bulunma
-
-### 📋 Katkı Süreci
-
-1. **Fork** yapın
-2. **Feature branch** oluşturun (`git checkout -b feature/amazing-feature`)
-3. **Commit** yapın (`git commit -m 'Add amazing feature'`)
-4. **Push** yapın (`git push origin feature/amazing-feature`)
-5. **Pull Request** oluşturun
-
-### 🧪 Test Katkıları
-
-- ✅ Yeni test senaryoları ekleyin
-- ✅ Page Object'leri geliştirin
-- ✅ Test coverage artırın
-- ✅ Performance testleri ekleyin
-- ✅ Gerçek metriklerle entegre edin
-
-### 📊 Monitoring Katkıları
-
-- ✅ Yeni dashboard'lar oluşturun
-- ✅ Alert kuralları ekleyin
-- ✅ Yeni metrikler tanımlayın
-- ✅ Grafana plugin'leri entegre edin
-
-## 📄 Lisans
-
-Bu proje **MIT License** altında lisanslanmıştır.
+Sorun yaşarsanız:
+1. Docker servislerinin çalıştığını kontrol edin
+2. Port'ların açık olduğunu kontrol edin
+3. Test loglarını inceleyin
+4. Prometheus targets'larını kontrol edin
 
 ---
 
-## 🎯 Sonuç
-
-Bu proje, modern test otomasyonu için **kapsamlı bir monitoring çözümü** sunar. **Selenium Java** ile **Grafana, Prometheus ve cAdvisor** entegrasyonu sayesinde test otomasyonu süreçlerinizi **gerçek zamanlı** olarak izleyebilir ve **görselleştirebilirsiniz**.
-
-**Key Features:**
-- 🚀 **Kolay kurulum** (Docker Compose)
-- 📊 **Gerçek zamanlı monitoring** (gerçek test verileri)
-- 🧪 **Kapsamlı test coverage** (Login + Product tests)
-- 📈 **Detaylı metrikler** (başarı oranı, süreler, bellek)
-- 🎨 **Modern dashboard'lar** (Grafana)
-- 🔄 **Otomatik metrik toplama** (Prometheus)
-
-**Başlamak için:** `docker-compose up -d` komutunu çalıştırın, testleri çalıştırın ve http://localhost:3000 adresine gidin! 🎉 
+**Not**: Bu proje Windows ortamında test edilmiştir. Linux/Mac için script'leri uyarlamanız gerekebilir. 
