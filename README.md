@@ -1,6 +1,8 @@
 # Test Automation Monitoring Stack
 
-Bu proje, Selenium WebDriver ile test otomasyonu yaparken Prometheus, Grafana , cAdvisor ve PushGateway kullanarak gerçek zamanlı monitoring sağlar.
+Bu proje, Selenium WebDriver ile test otomasyonu yaparken Prometheus, Grafana , cAdvisor ve PushGateway kullanarak gerçek zamanlı monitoring sağlar.  
+
+<img width="1707" height="898" alt="image" src="https://github.com/user-attachments/assets/94ae7907-762f-4101-8bb7-d3b6e5f86859" />
 
 ## 🚀 Özellikler
 
@@ -235,8 +237,6 @@ MetricsExporter.recordBrowserMemoryUsage(memoryUsage);
 - **Browser Memory Usage**: Tarayıcı bellek kullanımı (MB)
 - **Container CPU Usage**: CPU kullanımı (%)
 - **Container Memory Usage**: Bellek kullanımı (MiB)
-
-<img width="1707" height="898" alt="image" src="https://github.com/user-attachments/assets/94ae7907-762f-4101-8bb7-d3b6e5f86859" />
 
 ## 📊 Örnek Kullanım Senaryosu
 
