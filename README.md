@@ -1,6 +1,6 @@
 # Test Automation Monitoring Stack
 
-Bu proje, Selenium WebDriver ile test otomasyonu yaparken Prometheus, Grafana ve cAdvisor kullanarak gerçek zamanlı monitoring sağlar.
+Bu proje, Selenium WebDriver ile test otomasyonu yaparken Prometheus, Grafana , cAdvisor ve PushGateway kullanarak gerçek zamanlı monitoring sağlar.
 
 ## 🚀 Özellikler
 
@@ -44,7 +44,7 @@ mvn clean compile
 
 3. **Monitoring stack'i başlatın:**
 ```bash
-run-tests-with-monitoring.bat
+docker-compose up -d
 ```
 
 ## 📊 Monitoring Dashboard'ları
@@ -68,49 +68,81 @@ run-tests-with-monitoring.bat
 
 ## 🧪 Test Çalıştırma
 
-### Otomatik Çalıştırma
-```bash
-run-tests-with-monitoring.bat
-```
-
-Bu script:
-1. Docker Compose ile monitoring stack'i başlatır
-2. Eski Allure raporlarını temizler
-3. Testleri çalıştırır
-4. Dashboard linklerini gösterir
-
 ### Manuel Çalıştırma
 ```bash
 # 1. Monitoring stack'i başlat
 docker-compose up -d
 
-# 2. Testleri çalıştır
-mvn clean test
+# 2. IDE'de testleri çalıştır
+# IntelliJ IDEA veya Eclipse'de:
+# src/test/java/com/testautomation/tests/LoginTest.java
+# src/test/java/com/testautomation/tests/ProductTest.java
 
 # 3. Grafana'ya eriş
 # http://localhost:3000 (admin/admin123)
 ```
 
-## 📈 Metrikler
+## 📈 Metrikler ve Açıklamaları
 
 ### Test Metrikleri
-- `test_executions_total` - Toplam test sayısı
-- `test_successes_total` - Başarılı test sayısı
-- `test_failures_total` - Başarısız test sayısı (failure_type label'ı ile)
-- `test_success_rate` - Başarı oranı yüzdesi
-- `test_execution_duration_seconds` - Test çalışma süreleri
-- `active_tests` - Aktif test sayısı
+
+#### **Test Success Rate (Test Başarı Oranı)**
+- **Amaç**: Test suite'inizin ne kadar başarılı olduğunu gösterir
+- **Hesaplama**: (Başarılı Test Sayısı / Toplam Test Sayısı) × 100
+- **Örnek**: %85 = 17 başarılı test / 20 toplam test
+- **Kullanım**: Test kalitesini ve güvenilirliğini değerlendirmek için
+
+#### **Test Execution Count (Test Çalıştırma Sayısı)**
+- **Amaç**: Belirli bir zaman diliminde kaç test çalıştırıldığını gösterir
+- **Örnek**: 42 test çalıştırıldı
+- **Kullanım**: Test throughput'unu ve performansını ölçmek için
+
+#### **Test Duration (Test Süresi)**
+- **Amaç**: Her testin ne kadar sürdüğünü gösterir
+- **Birim**: Saniye
+- **Örnek**: Ortalama 2.5 saniye
+- **Kullanım**: Yavaş testleri tespit etmek ve optimizasyon için
+
+#### **Failed Tests Count (Başarısız Test Sayısı)**
+- **Amaç**: Başarısız testlerin sayısını ve türünü gösterir
+- **Hata Türleri**: assertion_error, timeout_error, element_not_found
+- **Kullanım**: Hangi tür hataların daha sık olduğunu analiz etmek için
+
+#### **Active Tests (Aktif Test Sayısı)**
+- **Amaç**: Şu anda çalışan test sayısını gösterir
+- **Kullanım**: Paralel test çalıştırma durumunu izlemek için
 
 ### Sayfa Metrikleri
-- `page_load_time_seconds` - Sayfa yükleme süreleri
-- `page_loads_total` - Toplam sayfa yükleme sayısı
-- `browser_memory_usage_bytes` - Browser memory kullanımı
+
+#### **Page Load Times (Sayfa Yükleme Süreleri)**
+- **Amaç**: Web sayfalarının ne kadar sürede yüklendiğini gösterir
+- **Birim**: Saniye
+- **Örnek**: Login sayfası 1.2s, Inventory sayfası 2.8s
+- **Kullanım**: Web uygulamasının performansını değerlendirmek için
+
+#### **Browser Memory Usage (Tarayıcı Bellek Kullanımı)**
+- **Amaç**: Tarayıcının ne kadar bellek kullandığını gösterir
+- **Birim**: MB (Megabyte)
+- **Örnek**: 45 MB
+- **Kullanım**: Memory leak'leri tespit etmek için
+
+### Sistem Metrikleri
+
+#### **Container CPU Usage (Kapsayıcı CPU Kullanımı)**
+- **Amaç**: Docker container'larının CPU kullanımını gösterir
+- **Birim**: CPU yüzdesi
+- **Kullanım**: Sistem kaynaklarının kullanımını izlemek için
+
+#### **Container Memory Usage (Kapsayıcı Bellek Kullanımı)**
+- **Amaç**: Docker container'larının bellek kullanımını gösterir
+- **Birim**: MiB (Mebibyte)
+- **Kullanım**: Memory kullanımını optimize etmek için
 
 ## 🔧 Konfigürasyon
 
 ### Prometheus Konfigürasyonu
 `monitoring/prometheus/prometheus.yml` dosyasında:
-- Scrape interval: 5s
+- Scrape interval: 15s
 - Test automation metrics: PushGateway (localhost:9091)
 - Node Exporter: node-exporter:9100
 - cAdvisor: cadvisor:8080
@@ -121,13 +153,13 @@ mvn clean test
 
 ## 🐛 Sorun Giderme
 
-### Metrics Server Başlamıyor
+### PushGateway Bağlantı Sorunu
 ```bash
 # PushGateway'ın çalışıp çalışmadığını kontrol edin
 docker-compose ps pushgateway
 
-# Metrics server'ı manuel başlatın
-java -cp "target/classes;target/test-classes" com.testautomation.utils.MetricsExporter
+# PushGateway loglarını kontrol edin
+docker-compose logs pushgateway
 ```
 
 ### Docker Servisleri Başlamıyor
@@ -142,7 +174,7 @@ docker-compose logs grafana
 
 ### Grafana'da Metrikler Görünmüyor
 1. Prometheus'ta targets'ları kontrol edin: http://localhost:9090/targets
-2. Test automation target'ının UP olduğundan emin olun
+2. PushGateway target'ının UP olduğundan emin olun
 3. 2-5 dakika bekleyin (ilk scrape için)
 
 ## 📝 Test Yazma
@@ -187,46 +219,48 @@ MetricsExporter.recordBrowserMemoryUsage(memoryUsage);
 
 ### Grafana Dashboard'ında Görebileceğiniz Metrikler:
 
-1. **Test Başarı Oranı**: Yüzde olarak başarılı test oranı
-2. **Test Çalışma Süreleri**: Her testin ne kadar sürdüğü
-3. **Sayfa Yükleme Süreleri**: Hangi sayfaların ne kadar sürdüğü
-4. **Browser Memory Kullanımı**: Tarayıcı memory kullanımı
-5. **Aktif Test Sayısı**: Şu anda çalışan test sayısı
-6. **Sistem Metrikleri**: CPU, Memory, Disk kullanımı
+1. **Test Success Rate**: Yüzde olarak başarılı test oranı
+2. **Test Execution Count**: Belirli zaman diliminde çalışan test sayısı
+3. **Test Duration**: Test süreleri histogramı
+4. **Page Load Times**: Sayfa yükleme süreleri
+5. **Browser Memory Usage**: Tarayıcı bellek kullanımı (MB)
+6. **Failed Tests Count**: Başarısız test sayısı
+7. **Container CPU/Memory**: Sistem kaynak kullanımı
 
 ### Dashboard Panelleri:
-- **Test Executions**: Toplam test sayısı grafiği
-- **Success Rate**: Başarı oranı trendi
-- **Test Duration**: Test süreleri histogramı
-- **Page Load Times**: Sayfa yükleme süreleri
-- **System Resources**: CPU, Memory, Disk kullanımı
-- **Container Metrics**: Docker container metrikleri
+- **Test Success Rate**: Başarı oranı trendi (%)
+- **Test Execution Count**: Test çalıştırma sayısı
+- **Test Duration**: Test süreleri (saniye)
+- **Page Load Times**: Sayfa yükleme süreleri (saniye)
+- **Browser Memory Usage**: Tarayıcı bellek kullanımı (MB)
+- **Container CPU Usage**: CPU kullanımı (%)
+- **Container Memory Usage**: Bellek kullanımı (MiB)
 
 ## 📊 Örnek Kullanım Senaryosu
 
 1. **Monitoring stack'i başlatın:**
    ```bash
-   run-tests-with-monitoring.bat
+   docker-compose up -d
    ```
 
-2. **Testler çalışırken Grafana'ya gidin:**
+2. **IDE'de testleri çalıştırın:**
+   - IntelliJ IDEA veya Eclipse açın
+   - `LoginTest.java` veya `ProductTest.java` çalıştırın
+
+3. **Grafana'da izleyin:**
    - http://localhost:3000 (admin/admin123)
+   - Testlerin gerçek zamanlı çalışmasını görün
+   - Başarı oranını takip edin
+   - Test sürelerini analiz edin
 
-3. **Dashboard'da şunları göreceksiniz:**
-   - Testlerin gerçek zamanlı çalışması
-   - Başarı/başarısızlık oranları
-   - Test süreleri
-   - Sayfa yükleme performansı
-   - Sistem kaynak kullanımı
-
-4. **Test tamamlandıktan sonra:**
-   - Final metrikleri görüntüleyin
-   - Performans analizi yapın
-   - Sorunlu testleri tespit edin
+4. **Performans Analizi:**
+   - Hangi testlerin yavaş olduğunu tespit edin
+   - Başarısızlık nedenlerini analiz edin
+   - Sayfa yükleme performansını değerlendirin
 
 ## 🔄 Sürekli Monitoring
 
-Metrics server test suite tamamlandıktan sonra da çalışmaya devam eder. Bu sayede:
+PushGateway test suite tamamlandıktan sonra da çalışmaya devam eder. Bu sayede:
 - Sürekli monitoring yapabilirsiniz
 - Geçmiş metrikleri karşılaştırabilirsiniz
 - Trend analizi yapabilirsiniz
@@ -235,7 +269,7 @@ Metrics server test suite tamamlandıktan sonra da çalışmaya devam eder. Bu s
 
 Sorun yaşarsanız:
 1. Docker servislerinin çalıştığını kontrol edin
-2. Port'ların açık olduğunu kontrol edin
+2. PushGateway'ın çalıştığını kontrol edin
 3. Test loglarını inceleyin
 4. Prometheus targets'larını kontrol edin
 
