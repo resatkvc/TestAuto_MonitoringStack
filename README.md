@@ -22,6 +22,12 @@ Bu proje, Selenium WebDriver ile test otomasyonu yaparken Prometheus, Grafana , 
 - **cAdvisor**: Container metrikleri ve Docker stats
 - **Prometheus**: Kendi metrikleri
 
+## 📖 Blog Yazısı
+
+👉 Bu projenin detaylı kurulumunu, konfigürasyonunu ve kullanımını adım adım anlattığım blog yazım için aşağıdaki bağlantıdan inceleyebilirsiniz:
+
+🔗 [Metrik Tabanlı Test Otomasyonu: Prometheus + Grafana ile Gerçek Zamanlı Gözlem](https://kavciresat.medium.com/metrik-tabanl%C4%B1-test-otomasyonu-prometheus-grafana-ile-ger%C3%A7ek-zamanl%C4%B1-g%C3%B6zlem-60e5d09ad2e7)
+
 ## 🛠️ Kurulum
 
 ### Gereksinimler
